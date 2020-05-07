@@ -9,6 +9,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import moment from "moment";
+import PickerContainer from "./PickerContainer/PickerContainer";
+import SmoothPicker from "react-native-smooth-picker";
+// import TextAnimated from "./PickerContainer/TextAnimated";
 
 // const DAYS = () => {
 //   const days = [];
@@ -37,27 +40,15 @@ const DATA = [
   },
 ];
 
-var ACTION_TIMER = 400;
-var COLORS = ["rgb(2,255,255)", "rgb(111,235,62)"];
-
 const Calendar = (props) => {
-  //   const [YAnimation, setYAnimation] = useState(new Animated.Value());
-
-  //   useEffect(() => {
-  //     const rpanResponder = PanResponder.create({
-  //       onMoveShouldSetPanResponder: () => true,
-  //       onPanResponderMove: Animated.event([null, { dy: YAnimation }]),
-  //     });
-  //   });
-
   const pan = useRef(new Animated.ValueXY()).current;
-  const scaleContainer = useRef(new Animated.Value(40)).current;
+  const [selected, setselected] = useState();
 
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
-        console.log(pan.y);
+        // console.log(pan.y);
         pan.setOffset({
           x: pan.x._value,
           y: pan.y._value,
@@ -72,76 +63,12 @@ const Calendar = (props) => {
     })
   ).current;
 
-  const handlePressIn = () => {
-    console.log("press in");
-    Animated.timing(scaleContainer, {
-      duration: 500,
-      toValue: 80,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.timing(scaleContainer, {
-      duration: 500,
-      toValue: 40,
-    }).start();
-    console.log(scaleContainer);
-  };
-
-  const animationActionComplete = () => {
-    console.log("se disparó la acción");
-  };
-
-  const getProgressStyles = () => {
-    var width = scaleContainer.interpolate({
-      inputRange: [1, 2],
-      outputRange: [10, 400],
-    });
-    var bgColor = scaleContainer.interpolate({
-      inputRange: [0, 1],
-      outputRange: COLORS,
-    });
-    return {
-      width: width,
-      height: 90,
-
-      backgroundColor: "red",
-    };
-  };
-  console.log(getProgressStyles());
+  // const handleChange = (index) => {
+  //   setselected(index)
+  // };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Drag this box!</Text>
-      <TouchableWithoutFeedback
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-      >
-        <Animated.View
-          style={[
-            {
-              width: 60,
-              height: 60,
-              elevation: 5,
-              backgroundColor: "white",
-              margin: 5,
-              justifyContent:'center',
-              alignItems:'center'
-            },
-            {
-              height: scaleContainer,
-            },
-          ]}
-        >
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-        </Animated.View>
-      </TouchableWithoutFeedback>
-
       <View style={styles.boxAnimated}>
         <Animated.View
           style={{
@@ -171,13 +98,77 @@ const Calendar = (props) => {
         >
           <Text style={styles.text}>ENE</Text>
         </Animated.View>
-        {/* <FlatList
+      </View>
+      <View style={styles.boxAnimated}>
+        <FlatList
           data={DATA}
           renderItem={({ item }) => (
-            <Text style={styles.text}>{item.title}</Text>
+            <Animated.View
+              style={{
+                opacity: pan.y.interpolate({
+                  inputRange: [-20, 0, 20],
+                  outputRange: [0, 1, 0],
+                }),
+                transform: [
+                  {
+                    translateY: pan.y,
+                  },
+                  {
+                    rotateX: pan.y.interpolate({
+                      inputRange: [-30, 0, 30],
+                      outputRange: [2, 0, 2],
+                    }),
+                  },
+                  {
+                    scale: pan.y.interpolate({
+                      inputRange: [-30, 0, 30],
+                      outputRange: [0.5, 1, 0.5],
+                    }),
+                  },
+                ],
+              }}
+              {...panResponder.panHandlers}
+            >
+              {/* <Text style={styles.text}>ENE</Text> */}
+              <Text
+                style={styles.text}
+                // onPress={() => {
+                //   console.log(`Hola desde ${item.title}`);
+                // }}
+              >
+                {item.title}
+              </Text>
+            </Animated.View>
           )}
           keyExtractor={(item) => item.id}
-        /> */}
+        />
+      </View>
+      <View style={styles.boxAnimated}>
+        <SmoothPicker
+          // offsetSelection={40}
+          // magnet
+          snapInterval={30}
+          snapToAlignment="center"
+          scrollAnimation
+          data={DATA}
+          // onSelected={({ item, index }) => handleChange(index)}
+          renderItem={({ item, index }) => (
+            <Text style={styles.text}>{item.title}</Text>
+          )}
+        />
+      </View>
+      <View style={styles.boxAnimated}>
+        {/* <PickerContainer> */}
+          <FlatList
+            data={DATA}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item, index }) => (
+              <Text style={styles.text}>{item.title}</Text>
+            )}
+            pagingEnabled
+            snapToAlignment='center'
+          />
+        {/* </PickerContainer> */}
       </View>
     </View>
     // <View style={styles.container}>
@@ -204,6 +195,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   boxAnimated: {
+    margin: 5,
+    backgroundColor: "blue",
     borderRadius: 10,
     height: 40,
     justifyContent: "center",
@@ -231,10 +224,13 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 10,
+    // height: 30,
     width: 80,
     textAlign: "center",
+    textAlignVertical: "center",
     color: "#562482",
     fontWeight: "bold",
+    // backgroundColor:'tomato'
   },
 });
 
