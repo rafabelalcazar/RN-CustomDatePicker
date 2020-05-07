@@ -38,11 +38,47 @@ const DATA = [
     id: "58694a0f-3da1-471f-bd96-145571e29d72",
     title: "MAR",
   },
+  {
+    id: "58694a0f-3da1-471f-bd96",
+    title: "ABR",
+  },
+  {
+    id: "58694a0f-3da1-bd96-145571e29d72",
+    title: "MAY",
+  },
+  {
+    id: "0f-3da1-471f-bd96-145571e29d72",
+    title: "JUN",
+  },
+  {
+    id: "f-3da1-471f-bd96",
+    title: "JUL",
+  },
+  {
+    id: "0f-3da11f-b96",
+    title: "AGO",
+  },
+  {
+    id: "0-3da1-4F1f-bd96",
+    title: "SEP",
+  },
+  {
+    id: "0-SDda1-471f-bd96",
+    title: "OCT",
+  },
+  {
+    id: "0fN1-471f-bd96",
+    title: "NOV",
+  },
+  {
+    id: "0f-3DFS1-471f-bd96",
+    title: "DIC",
+  },
 ];
 
 const Calendar = (props) => {
   const pan = useRef(new Animated.ValueXY()).current;
-  const [selected, setselected] = useState();
+  const [selected, setSelected] = useState(1);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -63,9 +99,13 @@ const Calendar = (props) => {
     })
   ).current;
 
-  // const handleChange = (index) => {
-  //   setselected(index)
-  // };
+  const onViewRef = React.useRef(({viewableItems}) => {
+    console.log('estamos en',viewableItems[0].item.title);
+    setSelected(viewableItems[0].item.title)
+    // viewableItems[0].item.title
+    // Use viewable items in state or as intended
+  });
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
 
   return (
     <View style={styles.container}>
@@ -159,32 +199,35 @@ const Calendar = (props) => {
       </View>
       <View style={styles.boxAnimated}>
         {/* <PickerContainer> */}
-          <FlatList
-            data={DATA}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => (
-              <Text style={styles.text}>{item.title}</Text>
-            )}
-            pagingEnabled
-            snapToAlignment='center'
-          />
+        <FlatList
+          data={DATA}
+          keyExtractor={(item) => item.id}
+          // getItemLayout={(data, index) => {
+          //   console.log(data)
+          //   return {
+          //     length: 40,
+          //     offset: 40 * index,
+          //     index,
+          //   };
+          // }}
+          onViewableItemsChanged={onViewRef.current}
+          viewabilityConfig={viewConfigRef.current}
+          renderItem={({ item, index }) => (
+            <Text
+              onPress={() => {
+                setSelected(item.title);
+              }}
+              style={item.title == selected ? styles.text : styles.normalText}
+            >
+              {item.title}
+            </Text>
+          )}
+          pagingEnabled
+          snapToAlignment="center"
+        />
         {/* </PickerContainer> */}
       </View>
     </View>
-    // <View style={styles.container}>
-    //   <Animated.View
-    //     {...panResponder.panHandlers}
-    //     style={[
-    //       { transform: position.getTranslateTransform() },
-    //       styles.appStyles,
-    //     ]}
-    //   >
-    //     ><Text>Calendar</Text>
-    //   </Animated.View>
-    //   {/* {DAYS().map((item, index) => (
-    //     <Text key={index}>{item}</Text>
-    //   ))} */}
-    // </View>
   );
 };
 
@@ -223,14 +266,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   text: {
-    margin: 10,
-    // height: 30,
+    height: 40,
     width: 80,
     textAlign: "center",
     textAlignVertical: "center",
     color: "#562482",
     fontWeight: "bold",
-    // backgroundColor:'tomato'
+  },
+  normalText: {
+    height: 40,
+    width: 80,
+    textAlign: "center",
+    textAlignVertical: "center",
+    color: "#562482",
+    // fontWeight: "bold",
   },
 });
 

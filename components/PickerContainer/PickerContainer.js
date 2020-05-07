@@ -14,8 +14,8 @@ const PickerContainer = (props) => {
     console.log("press in");
     Animated.timing(scaleContainer, {
       duration: 500,
-      toValue: 80,
-    }).start();
+      toValue: 100,
+    }).start(()=>setTimeout(handlePressOut,5000));
   };
 
   const handlePressOut = () => {
@@ -23,13 +23,13 @@ const PickerContainer = (props) => {
       duration: 500,
       toValue: 40,
     }).start();
-    console.log(scaleContainer);
+    // console.log(scaleContainer);
   };
 
   return (
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
+      // onPressOut={handlePressOut}
     >
       <Animated.View
         style={[
