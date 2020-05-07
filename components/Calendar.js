@@ -12,6 +12,8 @@ import moment from "moment";
 import PickerContainer from "./PickerContainer/PickerContainer";
 import SmoothPicker from "react-native-smooth-picker";
 // import TextAnimated from "./PickerContainer/TextAnimated";
+import InfiniteScroll from "react-native-infinite-looping-scroll";
+import { LinearGradient } from "expo-linear-gradient";
 
 // const DAYS = () => {
 //   const days = [];
@@ -99,9 +101,9 @@ const Calendar = (props) => {
     })
   ).current;
 
-  const onViewRef = React.useRef(({viewableItems}) => {
-    console.log('estamos en',viewableItems[0].item.title);
-    setSelected(viewableItems[0].item.title)
+  const onViewRef = React.useRef(({ viewableItems }) => {
+    console.log("estamos en", viewableItems[0].item.title);
+    setSelected(viewableItems[0].item.title);
     // viewableItems[0].item.title
     // Use viewable items in state or as intended
   });
@@ -198,18 +200,27 @@ const Calendar = (props) => {
         />
       </View>
       <View style={styles.boxAnimated}>
+        <LinearGradient
+          colors={["#FFFFFF", "transparent"]}
+          style={{
+            // backgroundColor:'yellow',
+            borderRadius: 8,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            height: 7,
+            zIndex: 1,
+          }}
+        />
         {/* <PickerContainer> */}
         <FlatList
           data={DATA}
           keyExtractor={(item) => item.id}
-          // getItemLayout={(data, index) => {
-          //   console.log(data)
-          //   return {
-          //     length: 40,
-          //     offset: 40 * index,
-          //     index,
-          //   };
-          // }}
+          showsVerticalScrollIndicator={false}
+          onScroll={(e) => {
+            console.log(e);
+          }}
           onViewableItemsChanged={onViewRef.current}
           viewabilityConfig={viewConfigRef.current}
           renderItem={({ item, index }) => (
@@ -225,7 +236,57 @@ const Calendar = (props) => {
           pagingEnabled
           snapToAlignment="center"
         />
+        <LinearGradient
+          colors={["transparent", "#FFFFFF"]}
+          style={{
+            // backgroundColor:'yellow',
+            borderRadius: 8,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 7,
+            zIndex: 1,
+          }}
+        />
         {/* </PickerContainer> */}
+      </View>
+      <View style={styles.boxAnimated}>
+        <View style={styles.boxAnimated}>
+          <View style={{ flex: 1 }} onLayout={this._onLayoutDidChange}></View>
+        </View>
+        {/* <InfiniteScroll
+        getItemLayout={(data, index) => (
+          {length: 40, offset: 40 * index, index}
+        )}
+        offset={40}
+          data={[
+            { key: "1" },
+            { key: "2" },
+            { key: "3" },
+            { key: "4" },
+            { key: "5" },
+            { key: "6" },
+            { key: "7" },
+          ]}
+          renderItem={({ item }) => (
+           
+              <Text style={styles.text}>{item.key}</Text>
+            
+          )}
+        /> */}
+        {/* <InfiniteScroll
+          data={[
+            { key: "1" },
+            { key: "2" },
+            { key: "3" },
+            { key: "4" },
+            { key: "5" },
+            { key: "6" },
+            { key: "7" },
+          ]}
+          renderItem={({ item }) => <Text style={styles.text}>{item.key}</Text>}
+        /> */}
       </View>
     </View>
   );

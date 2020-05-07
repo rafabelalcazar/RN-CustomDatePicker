@@ -3654,6 +3654,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+moment@^2.25.3:
+  version "2.25.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.3.tgz#252ff41319cf41e47761a1a88cab30edfe9808c0"
+  integrity sha512-PuYv0PHxZvzc15Sp8ybUCoQ+xpyPWvjOuK72a5ovzp2LI32rJXOiIfyoFoYvG3s6EwwrdkMyWuRiEHSZRLJNdg==
+
 morgan@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.10.0.tgz#091778abc1fc47cd3509824653dae1faab6b17d7"
@@ -4168,6 +4173,14 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@15.5.10:
+  version "15.5.10"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+  integrity sha1-J5ffwxJhguOpXj37suiT3ddFYVQ=
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+
 prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
@@ -4236,6 +4249,18 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-native-infinite-looping-scroll@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-infinite-looping-scroll/-/react-native-infinite-looping-scroll-0.0.4.tgz#307620c042e2f9ad5f044d64972833a7d93d0b7a"
+  integrity sha512-xlyEbDeX58X4j8mO+P70/1j3k0gonm5IwU7l6/NrQ0FcEmxp45hzxDwRqBrO/FobZWMX/n6tb+o0uLJjbDcIZw==
+  dependencies:
+    prop-types "15.5.10"
+
+react-native-smooth-picker@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-smooth-picker/-/react-native-smooth-picker-0.2.5.tgz#38cf72d9a0ee1095a654c7db8ace389a80130b74"
+  integrity sha512-5iSK7MWhgH9CnYlrKtgbFBrr8QZ/GYrXw9WUH9RowX2aSKtnCBVON0eCCjbDIpIeuZiOlKUzbpb1oPGv7VNazA==
 
 react-native-view-shot@3.1.2:
   version "3.1.2"
