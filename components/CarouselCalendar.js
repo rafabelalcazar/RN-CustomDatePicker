@@ -1,10 +1,5 @@
 import React, { useState, useRef } from "react";
-import {
-  Text,
-    View,
-  StyleSheet,
-  Animated,
-} from "react-native";
+import { Text, View, StyleSheet, Animated } from "react-native";
 import Carousel from "react-native-looped-carousel";
 
 const DATA = [
@@ -66,34 +61,47 @@ const DATA = [
 const CarouselCalendar = (props) => {
   const [width, setWidth] = useState(80);
   const [height, setHeight] = useState(40);
+  const [animationEnded, setAnimationEnded] = useState(null);
 
   const heightContainer = useRef(new Animated.Value(40)).current;
 
   const moreHeight = () => {
-      console.log('creciendo')
+    // setAnimationEnded(false);
+    // console.log("Termino animacion:", animationEnded);
     // Will change containers height in 0.5 seconds
+    setAnimationEnded(false);
     Animated.timing(heightContainer, {
       toValue: 80,
-      duration: 5
+      duration: 5,
     }).start();
   };
 
   const lessHeight = () => {
-    console.log('decreciendo')
-  // Will change containers height in 0.5 seconds
-  Animated.timing(heightContainer, {
-    toValue: 40,
-    duration: 500
-  }).start();
-};
+    setAnimationEnded(true);
+    // console.log("decreciendo,Termino anim:", animationEnded);
+    setTimeout(() => {
+      animationEnded
+        ? Animated.timing(heightContainer, {
+            toValue: 40,
+            duration: 500,
+          }).start()
+        : lessHeight();
+    }, 5000);
+    // Will change containers height in 0.5 seconds
+    // Animated.timing(heightContainer, {
+    //   toValue: 40,
+    //   duration: 500,
+    // }).start();
+  };
   return (
     <View style={{ flex: 1, justifyContent: "center" }}>
-      {/* <TouchableWithoutFeedback style={{backgroundColor:'red',zIndex:1}} onPress={()=>console.log('pressed Touchable')}> */}
       <Animated.View
-        style={[styles.boxAnimated,{
+        style={[
+          styles.boxAnimated,
+          {
             height: heightContainer,
-        }]}
-        //   onLayout={this._onLayoutDidChange}
+          },
+        ]}
       >
         <Carousel
           delay={2000}
@@ -103,17 +111,15 @@ const CarouselCalendar = (props) => {
             transform: [{ rotate: "90deg" }],
           }}
           autoplay={false}
-          //pageInfo
           currentPage={2}
-          onAnimateNextPage={(p) => console.log("hola", p)}
+          //   onAnimateNextPage={(p) => console.log("hola", p)}
           onScrollBegin={moreHeight}
           onScrollEnd={lessHeight}
-          onPress={() => console.log("Hola Onpress Carousel")}
         >
           {DATA.map((data) => {
             return (
               <View
-              key={data.id}
+                key={data.id}
                 style={[
                   {
                     //   backgroundColor: "#BADA55",
@@ -133,7 +139,6 @@ const CarouselCalendar = (props) => {
           })}
         </Carousel>
       </Animated.View>
-      {/* </TouchableWithoutFeedback> */}
     </View>
   );
 };
